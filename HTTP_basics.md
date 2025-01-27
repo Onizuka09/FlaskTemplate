@@ -74,11 +74,13 @@ def post_data():
 ```bash
 curl -X POST http://127.0.0.1:5000/post-data -H "Content-Type: application/json" -d '{"key":"value", "number":123}'
 ```
-- Summary Table
+- Summary Table:
+
 | **HTTP Method** | **Purpose**          | **Data Location**            | **Use Case**                   |
 |------------------|----------------------|------------------------------|---------------------------------|
 | GET              | Retrieve data        | Query parameters in the URL  | Fetching data, loading pages   |
-| POST             | Send data to server | Request body                 | Submitting forms, creating data |
+| POST             | Send data to server  | Request body                 | Submitting forms, creating data |
+
 
 #### Which to Use?
 - Use GET if the operation does not change the server state and is idempotent (e.g., fetching data).
