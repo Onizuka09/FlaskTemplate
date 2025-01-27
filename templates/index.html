@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REST API Client</title>
+</head>
+<body>
+	<h1>ON-Off button  </h1>
+    <h1>REST API Client</h1>
+	<button id="onOFF_btn" onclick="toogle()"> OFF </button>
+
+    <h2>Get All Tasks</h2>
+    <button onclick="getAllTasks()">Get All Tasks</button>
+    <div id="allTasks"></div>
+
+    <h2>Get Task by ID</h2>
+    <label for="taskId">Task ID:</label>
+    <input type="text" id="taskId">
+    <button onclick="getTaskById()">Get Task</button>
+    <div id="taskById"></div>
+
+    <h2>Create New Task</h2>
+    <label for="newTaskTitle">Title:</label>
+    <input type="text" id="newTaskTitle">
+    <label for="newTaskDescription">Description:</label>
+    <input type="text" id="newTaskDescription">
+    <button onclick="createNewTask()">Create Task</button>
+    <div id="newTaskResult"></div>
+
+    <script>
+        const apiUrl = 'http://localhost:5000/api/tasks';
+		var  btn_state=false; 
+		function toogle(){
+			var button = document.getElementById('onOFF_btn');
+			if (btn_state){
+				btn_state = false; 
+				button.textContent ="ON";
+				console.log(btn_state); 
+			}else {
+				btn_state=true ; 
+				button.textContent="Off";
+				console.log (btn_state); 
+			}}
+		
+
+        function getAllTasks() {
+            fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('allTasks').innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getTaskById() {
+            const taskId = document.getElementById('taskId').value;
+            fetch(`${apiUrl}/${taskId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('taskById').innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function createNewTask() {
+            const newTaskTitle = document.getElementById('newTaskTitle').value;
+            const newTaskDescription = document.getElementById('newTaskDescription').value;
+            const newData = {
+                title: newTaskTitle,
+                description: newTaskDescription
+            };
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('newTaskResult').innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
+
